@@ -141,7 +141,7 @@ print("Created V1 Datasets")
 import geopandas as gpd
 
 # gdf = gpd.GeoDataFrame(pd.read_csv('data/Census_geo_data.csv'))
-walkability_df = pd.read_csv('data/EPA_SmartLocationDatabase_V3_Jan_2021_Final.csv')
+walkability_df = pd.read_csv('data/Walkability_only_texas.csv')
 walkability_df['GEOID10'] = walkability_df['GEOID10'].astype('Int64')
 walkability_df['GEOID20'] = walkability_df['GEOID20'].astype('Int64')
 walkability_df['STATEFP'] = walkability_df['STATEFP'].astype('Int64')
