@@ -226,9 +226,9 @@ folium.GeoJson(
 
 folium.GeoJson(
     gdf,
-    name="Total Population",
+    name="Power",
     style_function=lambda feature: {
-        "fillColor": colormap_totpop(tot_pop_dict[feature["properties"]["GEOID"]]),
+        "fillColor": colormap_power(power_outage[feature['properties']['GEOID']]),
         "color": "black",
         "weight": 1,
         "dashArray": "5, 5",
@@ -238,9 +238,9 @@ folium.GeoJson(
 
 folium.GeoJson(
     gdf,
-    name="Power",
+    name="Total Population",
     style_function=lambda feature: {
-        "fillColor": colormap_power(power_outage[feature['properties']['GEOID']]),
+        "fillColor": colormap_totpop(tot_pop_dict[feature["properties"]["GEOID"]]),
         "color": "black",
         "weight": 1,
         "dashArray": "5, 5",
