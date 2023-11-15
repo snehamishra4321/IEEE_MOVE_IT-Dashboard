@@ -170,7 +170,7 @@ df  = spatial_df.merge(texas_walkability_df, left_on='GEOID', right_on='GEOID_12
 gdf = gpd.GeoDataFrame(df[['STATEFP_x', 'COUNTYFP_x', 'TRACTCE_x', 'BLKGRPCE_x',  'GEOID', 'geometry', 'TotPop', 'D1B', 'NatWalkInd','GEOID_12']])
 del df
 
-gdf['power'] = np.random.rand(len(gdf))
+gdf['power'] = np.random.choice([0, 1], len(gdf), p=[0.25, 0.75])
 
 print("Created Dataset for Geolocation")
 from branca.colormap import linear
