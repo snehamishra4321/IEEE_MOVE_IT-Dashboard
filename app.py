@@ -191,10 +191,9 @@ colormap_totpop = branca.colormap.LinearColormap(colors=['white', 'yellow', 'ora
                                           vmin = gdf.TotPop.min(), vmax = gdf.TotPop.max(), tick_labels = np.round(np.exp(np.linspace(gdf.TotPop.min(), gdf.TotPop.max(), 4)),1)
            )
 
-colormap_power = branca.colormap.LinearColormap(colors=['white', 'yellow', 'orange', 'red'],
-                                                index=[gdf['power'].min(), gdf['power'].max()],
-                                                vmin=gdf['power'].min(),
-                                                vmax=gdf['power'].max())
+# Choose discrete colors for 0 and 1
+colormap_power = branca.colormap.LinearColormap(colors=['white', 'red'], vmin=0, vmax=1)
+
 
 walk_ind_dict = gdf.set_index("GEOID")["NatWalkInd"]
 gross_pop_density_dict = gdf.set_index("GEOID")["D1B"]
