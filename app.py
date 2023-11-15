@@ -192,7 +192,7 @@ colormap_totpop = branca.colormap.LinearColormap(colors=['white', 'yellow', 'ora
            )
 
 # Choose discrete colors for 0 and 1
-colormap_power = branca.colormap.LinearColormap(colors=['white', 'red'], vmin=0, vmax=1)
+colormap_power = linear.YlGn_09.scale(0,1)
 
 
 walk_ind_dict = gdf.set_index("GEOID")["NatWalkInd"]
