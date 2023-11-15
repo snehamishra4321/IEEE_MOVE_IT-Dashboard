@@ -169,6 +169,9 @@ df  = spatial_df.merge(texas_walkability_df, left_on='GEOID', right_on='GEOID_12
 # df  = tab_df.merge(spatial_df, on='mukey', how='right')
 gdf = gpd.GeoDataFrame(df[['STATEFP_x', 'COUNTYFP_x', 'TRACTCE_x', 'BLKGRPCE_x',  'GEOID', 'geometry', 'TotPop', 'D1B', 'NatWalkInd','GEOID_12']])
 del df
+
+gdf['power'] = np.random.rand(len(gdf))
+
 print("Created Dataset for Geolocation")
 from branca.colormap import linear
 
@@ -188,9 +191,15 @@ colormap_totpop = branca.colormap.LinearColormap(colors=['white', 'yellow', 'ora
                                           vmin = gdf.TotPop.min(), vmax = gdf.TotPop.max(), tick_labels = np.round(np.exp(np.linspace(gdf.TotPop.min(), gdf.TotPop.max(), 4)),1)
            )
 
+colormap_power = branca.colormap.LinearColormap(colors=['white', 'yellow', 'orange', 'red'],
+                                                index=[gdf['power'].min(), gdf['power'].max()],
+                                                vmin=gdf['power'].min(),
+                                                vmax=gdf['power'].max())
+
 walk_ind_dict = gdf.set_index("GEOID")["NatWalkInd"]
 gross_pop_density_dict = gdf.set_index("GEOID")["D1B"]
 tot_pop_dict = gdf.set_index("GEOID")["TotPop"]
+power_outage = gdf.set_index("GEOID")["power"]
 folium.GeoJson(
     gdf,
     name="Walkability Index",
@@ -220,6 +229,18 @@ folium.GeoJson(
     name="Total Population",
     style_function=lambda feature: {
         "fillColor": colormap_totpop(tot_pop_dict[feature["properties"]["GEOID"]]),
+        "color": "black",
+        "weight": 1,
+        "dashArray": "5, 5",
+        "fillOpacity": 0.5,
+    },
+).add_to(m)
+
+folium.GeoJson(
+    gdf,
+    name="Power",
+    style_function=lambda feature: {
+        "fillColor": colormap_power(power_outage[feature['properties']['GEOID']]),
         "color": "black",
         "weight": 1,
         "dashArray": "5, 5",
