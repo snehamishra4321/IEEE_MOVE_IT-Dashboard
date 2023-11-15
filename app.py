@@ -228,7 +228,7 @@ folium.GeoJson(
     name="Power",
     style_function=lambda feature: {
         "fillColor": colormap_power(power_outage[feature['properties']['GEOID']]),
-        "color": "black",
+        "color": "blue",
         "weight": 1,
         "dashArray": "5, 5",
         "fillOpacity": 0.5,
