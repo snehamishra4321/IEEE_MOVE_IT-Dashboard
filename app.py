@@ -167,7 +167,8 @@ spatial_df['COUNTYFP'] = spatial_df['COUNTYFP'].apply(lambda x:int(x))
 spatial_df['BLKGRPCE'] = spatial_df['BLKGRPCE'].apply(lambda x:int(x))
 df  = spatial_df.merge(texas_walkability_df, left_on='GEOID', right_on='GEOID_12', how='left')
 # df  = tab_df.merge(spatial_df, on='mukey', how='right')
-gdf = gpd.GeoDataFrame(df[['STATEFP_x', 'COUNTYFP_x', 'TRACTCE_x', 'BLKGRPCE_x',  'GEOID', 'geometry', 'TotPop', 'D1B', 'NatWalkInd','GEOID_12']])
+#gdf = gpd.GeoDataFrame(df[['STATEFP_x', 'COUNTYFP_x', 'TRACTCE_x', 'BLKGRPCE_x',  'GEOID', 'geometry', 'TotPop', 'D1B', 'NatWalkInd','GEOID_12']])
+gdf = pd.read_csv('./data/filtered_gdf.csv')
 del df
 
 gdf['power'] = np.random.choice([0, 1], len(gdf), p=[0.25, 0.75])
