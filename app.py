@@ -6,6 +6,8 @@ import numpy as np
 import geopandas 
 import requests
 import branca
+from folium.plugins import HeatMap
+from shapely.wkt import loads
 
 from folium.plugins import BeautifyIcon
 from folium.plugins import MousePosition
@@ -81,6 +83,7 @@ data_points = generate_random_points(min_latitude, max_latitude, min_longitude, 
 # Create a DataFrame from the generated random points
 data_points = pd.DataFrame(data_points, columns=['Latitude', 'Longitude'])
 
+#score_data = pd.read_csv('c:/Users/Christopher/Downloads/filtered_new_point_data_v1.csv')
 
 tower_df = pd.read_csv('./data/Cellular_Towers_V1.csv')
 filtered_tower_df = tower_df[(tower_df['X']>min_longitude) & (tower_df['X']<max_longitude) & (
@@ -94,6 +97,49 @@ truck_points = pd.DataFrame(truckdata)
 
 # Create a map centered around the first location in your data
 m = folium.Map(location=[data_points['Latitude'].iloc[0], data_points['Longitude'].iloc[0]], zoom_start=12,tiles="OpenStreetMap",control_scale =True)
+
+
+# score_data = score_data.head(100)
+# lgd_txt = '<span style="color: {col};">Score</span>'
+# color = 'red'
+# # Add markers for each data point
+# data = folium.FeatureGroup(lgd_txt.format( txt= color+' egg', col= "#055C9D") ).add_to(m)
+
+# for index, row in score_data.iterrows():
+#     point = loads(row['geometry'])
+
+#     # Extract latitude and longitude
+#     lat, lon = point.y, point.x
+#     tooltip = f"Score: {row['Score']}"
+#     folium.Marker([lat,lon], opacity=0.7,
+#                   icon = BeautifyIcon(
+#                 prefix = "fa", icon="star", border_color="green", text_color="green"), tooltip = tooltip #,  icon_size=(5,5)
+#                   ).add_to(data)
+    
+
+# Define a function to get a color based on the score
+# def get_color(score):
+    
+#     # For scores in between, calculate a gradient from yellow to green
+#     normalized_score = (score - score_data['Score'].min()) / (score_data['Score'].max() - score_data['Score'].min()) *4
+#     r = int(255 * (1 - normalized_score**2))  # Squaring to emphasize small differences
+#     g = int(255 * (normalized_score**2))
+#     return f'rgb({r},{g},0)'
+
+# for index, row in score_data.iterrows():
+#     point = loads(row['geometry'])
+#     lat, lon = point.y, point.x
+
+#     # Add a tooltip with the score and dynamic color
+#     tooltip = f"Score: {row['Score']}"
+#     color = get_color(row['Score'])
+
+#     folium.Marker([lat, lon], opacity=0.7,
+#                   icon=folium.Icon(color=color, icon='star', prefix='fa'),
+#                   tooltip=tooltip,
+#                   popup=f"<b>{tooltip}</b>",
+#                   ).add_to(data)
+    
 
 lgd_txt = '<span style="color: {col};">Crowd</span>'
 color = 'red'
@@ -111,7 +157,7 @@ for ind, row in filtered_tower_df.iterrows():
     folium.Marker(location = [row['latdec'], row['londec']],icon = BeautifyIcon(
     prefix = "fa", icon="signal", border_color="#922B21", text_color="#922B21", text_size = 100,  icon_size=(50,50), inner_icon_style="font-size:24px;padding-top:5px;",
 )).add_to(tower)
-    
+
 lgd_txt = '<span style="color: {col};">Truck</span>'
 truck = folium.FeatureGroup(lgd_txt.format( txt= color+' egg', col= "#4CBB17")).add_to(m)
 for index, row in truck_points.iterrows():
@@ -124,7 +170,10 @@ lgd_txt = '<span style="color: {col};">Crowd Heatmap</span>'
 heat_data = [[row['Latitude'], row['Longitude']] for index, row in data_points.iterrows()]
 HeatMap(heat_data, min_opacity=0.1, blur = 30, name= lgd_txt.format( txt= color+' egg', col= "#055C9D") ).add_to(m)
 
-
+# Create a HeatMap layer using tower data
+lgd_txt = '<span style="color: {col};">Signal Heatmap</span>'
+heatmap_data = [[row['latdec'], row['londec']] for ind, row in filtered_tower_df.iterrows()]
+HeatMap(heatmap_data, min_opacity=0.1, blur = 30, radius = 100,name= lgd_txt.format( txt= color+' egg', col= "#055C9D")).add_to(m)
 
 def fit_bounds(points, m):
     sw = points[['Latitude', 'Longitude']].min().values.tolist()
@@ -141,36 +190,56 @@ print("Created V1 Datasets")
 import geopandas as gpd
 
 # gdf = gpd.GeoDataFrame(pd.read_csv('data/Census_geo_data.csv'))
-walkability_df = pd.read_csv('data/Walkability_only_texas.csv')
-walkability_df['GEOID10'] = walkability_df['GEOID10'].astype('Int64')
-walkability_df['GEOID20'] = walkability_df['GEOID20'].astype('Int64')
-walkability_df['STATEFP'] = walkability_df['STATEFP'].astype('Int64')
-walkability_df['COUNTYFP'] = walkability_df['COUNTYFP'].astype('Int64')
-walkability_df['TRACTCE'] = walkability_df['TRACTCE'].astype('Int64')
-walkability_df['BLKGRPCE'] = walkability_df['BLKGRPCE'].astype('Int64')
+# walkability_df = pd.read_csv('Walkability_only_texas.csv')
+# walkability_df['GEOID10'] = walkability_df['GEOID10'].astype('Int64')
+# walkability_df['GEOID20'] = walkability_df['GEOID20'].astype('Int64')
+# walkability_df['STATEFP'] = walkability_df['STATEFP'].astype('Int64')
+# walkability_df['COUNTYFP'] = walkability_df['COUNTYFP'].astype('Int64')
+# walkability_df['TRACTCE'] = walkability_df['TRACTCE'].astype('Int64')
+# walkability_df['BLKGRPCE'] = walkability_df['BLKGRPCE'].astype('Int64')
 
-# Create a 12 digit GEO ID to merge with Shape dataset
-walkability_df['GEOID_12'] = walkability_df.apply(lambda x: int(str(x['STATEFP']) + str(x['COUNTYFP']).zfill(3) + str(x['TRACTCE']).zfill(6) + str(x['BLKGRPCE'])) , axis=1) 
-texas_walkability_df = walkability_df[walkability_df['STATEFP']==48]
-del walkability_df
+# # Create a 12 digit GEO ID to merge with Shape dataset
+# walkability_df['GEOID_12'] = walkability_df.apply(lambda x: int(str(x['STATEFP']) + str(x['COUNTYFP']).zfill(3) + str(x['TRACTCE']).zfill(6) + str(x['BLKGRPCE'])) , axis=1) 
+# texas_walkability_df = walkability_df[walkability_df['STATEFP']==48]
+# del walkability_df
 
-print("Created Dataset for Walkability Index")
+# print("Created Dataset for Walkability Index")
 
-fp = "data/cb_2018_48_bg_500k/cb_2018_48_bg_500k.shp"
+# fp = "cb_2018_48_bg_500k.shp"
+
+# # Read file using gpd.read_file()
+# spatial_df = gpd.read_file(fp)
+# spatial_df['GEOID'] = spatial_df['GEOID'].apply(lambda x:int(x))
+# spatial_df['TRACTCE'] = spatial_df['TRACTCE'].apply(lambda x:int(x))
+# spatial_df['STATEFP'] = spatial_df['STATEFP'].apply(lambda x:int(x))
+# spatial_df['COUNTYFP'] = spatial_df['COUNTYFP'].apply(lambda x:int(x))
+# spatial_df['BLKGRPCE'] = spatial_df['BLKGRPCE'].apply(lambda x:int(x))
+# df  = spatial_df.merge(texas_walkability_df, left_on='GEOID', right_on='GEOID_12', how='left')
+# # df  = tab_df.merge(spatial_df, on='mukey', how='right')
+
+# Set filepath
+fp = "./data/filtered_gdf_v2.csv"
 
 # Read file using gpd.read_file()
-spatial_df = gpd.read_file(fp)
-spatial_df['GEOID'] = spatial_df['GEOID'].apply(lambda x:int(x))
-spatial_df['TRACTCE'] = spatial_df['TRACTCE'].apply(lambda x:int(x))
-spatial_df['STATEFP'] = spatial_df['STATEFP'].apply(lambda x:int(x))
-spatial_df['COUNTYFP'] = spatial_df['COUNTYFP'].apply(lambda x:int(x))
-spatial_df['BLKGRPCE'] = spatial_df['BLKGRPCE'].apply(lambda x:int(x))
-df  = spatial_df.merge(texas_walkability_df, left_on='GEOID', right_on='GEOID_12', how='left')
-# df  = tab_df.merge(spatial_df, on='mukey', how='right')
-gdf = gpd.GeoDataFrame(df[['STATEFP_x', 'COUNTYFP_x', 'TRACTCE_x', 'BLKGRPCE_x',  'GEOID', 'geometry', 'TotPop', 'D1B', 'NatWalkInd','GEOID_12']])
-del df
+gdf_read = gpd.read_file(fp, 
+                    GEOM_POSSIBLE_NAMES="geometry", 
+                    KEEP_GEOM_COLUMNS="NO")
 
+gdf_read['GEOID'] = gdf_read['GEOID'].apply(lambda x:int(x))
+gdf_read['GEOID_12'] = gdf_read['GEOID_12'].apply(lambda x:int(x))
+gdf_read['TotPop'] = gdf_read['TotPop'].apply(lambda x:int(x))
+gdf_read['D1B'] = gdf_read['D1B'].apply(lambda x:float(x))
+gdf_read['NatWalkInd'] = gdf_read['NatWalkInd'].apply(lambda x:float(x))
+gdf_read['STATEFP_x'] = gdf_read['STATEFP_x'].astype('int64')
+gdf_read['COUNTYFP_x'] = gdf_read['COUNTYFP_x'].astype('int64')
+gdf_read['TRACTCE_x'] = gdf_read['TRACTCE_x'].astype('int64')
+gdf_read['BLKGRPCE_x'] = gdf_read['BLKGRPCE_x'].astype('int64')
+
+gdf = gpd.GeoDataFrame(gdf_read[['STATEFP_x', 'COUNTYFP_x', 'TRACTCE_x', 'BLKGRPCE_x',  'GEOID', 'geometry', 'TotPop', 'D1B', 'NatWalkInd','GEOID_12']])
+
+gdf.crs = "EPSG:4326"
 gdf['power'] = np.random.choice([0, 1], len(gdf), p=[0.25, 0.75])
+print(gdf.info())
 
 print("Created Dataset for Geolocation")
 from branca.colormap import linear
@@ -180,7 +249,6 @@ from branca.colormap import linear
 colormap_walkind = linear.YlGn_09.scale(
     gdf.NatWalkInd.min(), gdf.NatWalkInd.max()
 )
-
 colormap_gross_pop_density = branca.colormap.LinearColormap(colors=['white', 'yellow', 'orange', 'red'],
                                           index = np.round(np.linspace(gdf.D1B.min(), gdf.D1B.max()/5, 4)),
                                           vmin = gdf.D1B.min(), vmax = gdf.D1B.max(), tick_labels = np.round(np.exp(np.linspace(gdf.D1B.min(), gdf.D1B.max(), 4)),1)
@@ -199,6 +267,8 @@ walk_ind_dict = gdf.set_index("GEOID")["NatWalkInd"]
 gross_pop_density_dict = gdf.set_index("GEOID")["D1B"]
 tot_pop_dict = gdf.set_index("GEOID")["TotPop"]
 power_outage = gdf.set_index("GEOID")["power"]
+
+print(gdf)
 folium.GeoJson(
     gdf,
     name="Walkability Index",
