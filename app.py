@@ -386,9 +386,9 @@ import streamlit as st
 from streamlit_folium import st_folium
 from folium.plugins import Fullscreen
 
+Fullscreen(position="topleft").add_to(m)
 st.title('Move-It Truck Dashboard')
 #st.markdown("# Move-It Truck Dashboard")
 
-Fullscreen(position="topleft").add_to(m)
 # st_data = st_folium(m, width=725)
 st_folium(m, height=725,width=725, returned_objects=[])
