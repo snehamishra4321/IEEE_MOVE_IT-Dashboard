@@ -88,7 +88,7 @@ data_points = pd.DataFrame(data_points, columns=['Latitude', 'Longitude'])
 #score_data = pd.read_csv('c:/Users/Christopher/Downloads/filtered_new_point_data_v1.csv')
 
 score_data = pd.read_csv('./data/scores.csv')
-tower_df = pd.read_csv('Cellular_Towers_V1.csv')
+tower_df = pd.read_csv('./data/Cellular_Towers_V1.csv')
 filtered_tower_df = tower_df[(tower_df['X']>min_longitude) & (tower_df['X']<max_longitude) & (
     tower_df['Y']>min_latitude) & (tower_df['Y']<max_latitude) ]
 
