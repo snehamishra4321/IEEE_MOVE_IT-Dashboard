@@ -368,7 +368,7 @@ color_gradient = {
     1:"red"
 }
 color_grad.caption = "Score color scale"
-color_grad.add_to(m)
+#color_grad.add_to(m)
 
 
 lgd_txt = '<span>Score Heatmap</span>'
