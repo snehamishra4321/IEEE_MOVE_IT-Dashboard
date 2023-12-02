@@ -70,6 +70,7 @@ requests==2.31.0
 requests-toolbelt==0.10.1
 rich==13.6.0
 rpds-py==0.10.4
+SciPy==1.11.4
 setuptools==68.0.0
 shapely==2.0.1
 six==1.16.0
