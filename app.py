@@ -267,7 +267,7 @@ st.markdown(
     """
     <h1 style='text-align: center; color: #333333; font-family: "Helvetica", Arial, sans-serif;'>
         <img src="./app/static/TAMU_logo.svg.png" alt="TAMU logo" width="50" style="vertical-align: left;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  MOVE-IT Dashboard &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  MOVE-IT Dashboard &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
         <img src="./app/static/IEEE_logo.svg.png" alt="IEEE logo" width="80" style="vertical-align: right;" />
     </h1>
     <hr style='border-top: 1px solid #dddddd; margin-top: 10px; margin-bottom: 10px;'/>
@@ -275,9 +275,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.write("\n")
-st.write("\n")
-st.write("\n")
+# st.write("\n")
+# st.write("\n")
+# st.write("\n")
 
 sidebar = st.sidebar
 sidebar.title(" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Customize Hotspots")
@@ -294,15 +294,15 @@ county = dropbox.multiselect(
 
 sidebar.write("\n")
 sidebar.write("\n")
-sidebar.write("\n")
-sidebar.write("\n")
-sidebar.write("\n")
-sidebar.write("\n")
-sidebar.write("\n")
-sidebar.write("\n")
-sidebar.write("\n")
+# sidebar.write("\n")
+# sidebar.write("\n")
+# sidebar.write("\n")
+# sidebar.write("\n")
+# sidebar.write("\n")
+# sidebar.write("\n")
+# sidebar.write("\n")
 
-sidebar.markdown("""<h1 style='text-align: center; padding-left:-2550px;'> Optimize For Features </h1>""",
+sidebar.markdown("""<h1 style='text-align: center; '> Optimize For Features </h1>""",
                  unsafe_allow_html=True)
 sidebar.write("Optimize hotspot based on importance : Use the slider to assign weights to each feature")
 sidebar.write("\n")
@@ -311,12 +311,12 @@ sidebar.write("\n")
 
 sliders = sidebar.container()
 # Define sliders in Streamlit for weights
-tower_weight = sliders.slider("Tower Weight", 0.0, 1.0, 0.4)
-hospital_weight = sliders.slider("Hospital Weight", 0.0, 1.0, 0.2)
-food_weight = sliders.slider("Food Facility Weight", 0.0, 1.0, 0.1)
-parking_weight = sliders.slider("Parking Weight", 0.0, 1.0, 0.4)
-totpop_weight = sliders.slider("Total Population Weight", 0.0, 1.0, 0.4)
-natwalkind_weight = sliders.slider("Natural Walkability Index Weight", 0.0, 1.0, 0.3)
+tower_weight = sliders.slider("Proximity to Cell Tower", 0.0, 1.0, 0.4)
+hospital_weight = sliders.slider("Proximity to Hospital", 0.0, 1.0, 0.2)
+food_weight = sliders.slider("Proximity to Food stores", 0.0, 1.0, 0.1)
+parking_weight = sliders.slider("Proximity to Parking", 0.0, 1.0, 0.4)
+totpop_weight = sliders.slider("Total Population ", 0.0, 1.0, 0.4)
+natwalkind_weight = sliders.slider("National Walkability Index ", 0.0, 1.0, 0.3)
 # """<h1 style='text-align: center; padding-left:-2550px;'>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MOVE-IT Dashboard  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>"""
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # SECTION 2 - READ AND PREPROCESS ALL DATA
@@ -378,7 +378,7 @@ print("[INFO] TIME TAKEN FOR READING DATA V2  --- %.2f seconds ---" % ( get_dela
 
 
 
-m = folium.Map([31.507878, -95.313537], zoom_start=8,  prefer_canvas=True, tiles=None)
+m = folium.Map([31.507878, -95.313537], zoom_start=7,  prefer_canvas=True, tiles=None)
 folium.raster_layers.TileLayer(tiles="openstreetmap", name='Open Street Map').add_to(m)
 folium.raster_layers.TileLayer(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", 
                                attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', 
@@ -603,7 +603,7 @@ folium.map.LayerControl('topleft', collapsed= False).add_to(m)
 # Add Full screen option
 Fullscreen(position="topleft").add_to(m)
 # Add map to Dashboard
-abc = st_folium(m, height=900,width=2800, returned_objects=[])
+abc = st_folium(m, height=700,width=2500, returned_objects=[])
 st.markdown("""<h6 style='text-align: center; padding-left:-2550px; color: #404040; '>  Each circle on the map denotes a candidate point with a number indicating its percentage score, reflecting the collective impact of all features.</h6>""", unsafe_allow_html=True)
 # st.write("Each circle on the map denotes a candidate point with a number indicating its percentage score, reflecting the collective impact of all features.")
 # center=st.session_state["center"], zoom=st.session_state["zoom"]
@@ -613,9 +613,45 @@ st.markdown("""<h6 style='text-align: center; padding-left:-2550px; color: #4040
 # st.markdown(str(colormap_power._repr_html_()).join(colormap_power._repr_html_()), unsafe_allow_html=True)
 st.markdown("")
 st.markdown("""<h6 style='text-align: center;  color: #404040; margin: 0; padding: 0;'> <b>Gradient Legend </b></h6>""", unsafe_allow_html=True)
-st.markdown("<span style='color: #404040; margin: 0; padding: 0;'>&emsp;&emsp;&emsp;&emsp; Walkability Index&emsp;</span>" + colormap_walkind._repr_html_() +
-            "<span style='color: #404040; margin: 0; padding: 0;'>&emsp;&emsp;&emsp;&emsp; Population &emsp;</span>" + colormap_totpop._repr_html_() + 
-            "<span style='color: #404040; margin: 0; padding: 0;'>&emsp;&emsp;&emsp;&emsp; Power &emsp;</span>" + colormap_power._repr_html_(), unsafe_allow_html=True)
+st.markdown("")
+# st.markdown("<span style='color: #404040; margin: 0; padding: 0;'>&emsp;&emsp;&emsp;&emsp; Walkability Index&emsp;</span>" + colormap_walkind._repr_html_() +
+#             "<span style='color: #404040; margin: 0; padding: 0;'>&emsp;&emsp;&emsp;&emsp; Population &emsp;</span>" + colormap_totpop._repr_html_() + 
+#             "<span style='color: #404040; margin: 0; padding: 0;'>&emsp;&emsp;&emsp;&emsp; Power &emsp;</span>" + colormap_power._repr_html_(), unsafe_allow_html=True)
+# st.markdown("<span style='text-align: left; color: #404040; margin: 0; padding: 0;'> Walkability Index&emsp;</span>" + colormap_walkind._repr_html_() +  
+#             "<span style='text-align: left; color: #404040; margin: 0; padding: 0;'>&emsp;&emsp;&emsp;&emsp; Population &emsp;</span>" + colormap_totpop._repr_html_() + "</br>" 
+#             # + "<span style='text-align: center; color: #404040; margin: 0; padding: 0;'>&emsp;&emsp;&emsp;&emsp; Power &emsp;" + colormap_power._repr_html_() + "</span>"
+#             , unsafe_allow_html=True)
+st.markdown(
+    "<div style='display: flex; align-items: center; justify-content: space-between;'>"
+    "<div style='flex: 1; text-align: left; color: #404040;'>"
+    "Walkability Index<br>"
+    + colormap_walkind._repr_html_()
+    + "</div>"
+    "<div style='flex: 1; text-align: right; color: #404040;'>"
+    "Population<br>"
+    + colormap_totpop._repr_html_()
+    + "</div>"
+    "</div>",
+    unsafe_allow_html=True
+)
+
+# st.markdown(
+#     "<div style='display: flex; align-items: center; justify-content: space-between;'>"
+#     "<div style='flex: 1; text-align: left; color: #404040;'>"
+#     "Walkability Index<br>"
+#     + colormap_walkind._repr_html_()
+#     + "</div>"
+#     "<div style='flex: 1; text-align: center; color: #404040;'>"
+#     "Population<br>"
+#     + colormap_totpop._repr_html_()
+#     + "</div>"
+#     "<div style='flex: 1; text-align: right; color: #404040;'>"
+#     "Power<br>"
+#     + colormap_power._repr_html_()
+#     + "</div>"
+#     "</div>",
+#     unsafe_allow_html=True
+# )
 
 
 print("[INFO] TIME TAKEN TO COMPLETE --- %.2f seconds ---\n\n" % (get_delay()))
