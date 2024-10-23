@@ -19,7 +19,7 @@ EROS is a prototype tool developed as a Capstone Project in collaboration with t
 ## Acknowledgments
 Thanks to the IEEE MOVE Global team for their support in developing EROS.
 
-## The web application is available at [Streamlit Web](https://moveit-dashboard.streamlit.app/)
+### The web application is available at [Streamlit Web](https://moveit-dashboard.streamlit.app/)
 
 ## To install and run locally :
 
