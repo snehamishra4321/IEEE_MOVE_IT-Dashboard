@@ -26,7 +26,8 @@ Thanks to the IEEE MOVE Global team for their support in developing EROS.
 ### STEP 1: 
 Clone the repo 
 
-```git clone [https://github.com/snehamishra4321/IEEE_MOVE_IT-Dashboard.git](https://github.com/snehamishra4321/IEEE_MOVE_IT-Dashboard.git)```
+```git clone https://github.com/snehamishra4321/IEEE_MOVE_IT-Dashboard.git```
+
 
 ### STEP 2:
 Go inside the project folder and run  
