@@ -1,5 +1,5 @@
 # IEEE_MOVE_IT-Dashboard
-# Emergency Response Optimization System (EROS)
+## Emergency Response Optimization System (EROS)
 
 ## Overview
 EROS is a prototype tool developed as a Capstone Project in collaboration with the IEEE MOVE Global team. It enhances emergency response by predicting demand hotspots and dynamically routing response vehicles for efficient deployment during disasters.
