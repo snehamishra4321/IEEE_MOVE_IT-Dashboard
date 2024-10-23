@@ -2,7 +2,7 @@
 ## Emergency Response Optimization System (EROS)
 
 ## Overview
-EROS is a prototype tool developed as a Capstone Project in collaboration with the IEEE MOVE Global team. It enhances emergency response by predicting demand hotspots and dynamically routing response vehicles for efficient deployment during disasters.
+EROS is a prototype tool developed as a Capstone Project in collaboration with the IEEE MOVE Global team and Texas A&M University. It enhances emergency response by predicting demand hotspots and dynamically routing response vehicles for efficient deployment during disasters.
 
 ## Key Features
 * Predictive Demand Analysis: Uses real-time and historical data to forecast emergency service needs, ensuring timely resource deployment.
@@ -12,9 +12,9 @@ EROS is a prototype tool developed as a Capstone Project in collaboration with t
 * Interactive Dashboard: Displays real-time hotspots, vehicle locations, optimized routes, and data visualizations for better coordination.
 
 ## Collaborators
-Harikrishnan Raghukumar
-Sneha Mishra
-Udvab Shrivastav
+* Harikrishnan Raghukumar
+* Sneha Mishra
+* Udvab Shrivastav
 
 ## Acknowledgments
 Thanks to the IEEE MOVE Global team for their support in developing EROS.
