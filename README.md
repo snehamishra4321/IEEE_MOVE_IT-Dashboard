@@ -12,8 +12,8 @@ EROS is a prototype tool developed as a Capstone Project in collaboration with t
 * Interactive Dashboard: Displays real-time hotspots, vehicle locations, optimized routes, and data visualizations for better coordination.
 
 ## Collaborators
-* Harikrishnan Raghukumar
 * Sneha Mishra
+* Harikrishnan Raghukumar
 * Udvab Shrivastav
 
 ## Acknowledgments
